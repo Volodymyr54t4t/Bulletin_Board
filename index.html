@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="uk">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дошка оголошень</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 Дошка оголошень</h1>
+            <p>Додавайте та переглядайте оголошення у вашій спільноті</p>
+        </div>
+
+        <!-- Added top bar with theme toggle and stats -->
+        <div class="top-bar">
+            <div class="stats">
+                <div class="stat-item">
+                    <span>📊</span>
+                    <span>Всього: <strong id="totalCount">0</strong></span>
+                </div>
+                <div class="stat-item">
+                    <span>⭐</span>
+                    <span>Обране: <strong id="favoriteCount">0</strong></span>
+                </div>
+                <div class="stat-item">
+                    <span>👀</span>
+                    <span>Переглядів: <strong id="viewCount">0</strong></span>
+                </div>
+            </div>
+            <button class="theme-toggle" onclick="toggleTheme()">
+                🌙 Темна тема
+            </button>
+        </div>
+
+        <div class="add-form">
+            <h2>➕ Додати нове оголошення</h2>
+            <form id="announcementForm">
+                <div class="form-group">
+                    <label for="title">Заголовок оголошення</label>
+                    <input type="text" id="title" name="title" required placeholder="Введіть заголовок...">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Категорія</label>
+                        <select id="category" name="category" required>
+                            <option value="">Оберіть категорію</option>
+                            <option value="Продаж">🛒 Продаж</option>
+                            <option value="Купівля">💰 Купівля</option>
+                            <option value="Послуги">🔧 Послуги</option>
+                            <option value="Робота">💼 Робота</option>
+                            <option value="Нерухомість">🏠 Нерухомість</option>
+                            <option value="Транспорт">🚗 Транспорт</option>
+                            <option value="Навчання">📚 Навчання</option>
+                            <option value="Хобі">🎨 Хобі</option>
+                            <option value="Інше">📝 Інше</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact">Контактна інформація</label>
+                        <input type="text" id="contact" name="contact" required placeholder="Телефон або email">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="price">Ціна (необов'язково)</label>
+                        <input type="number" id="price" name="price" placeholder="Введіть ціну в грн">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="location">Місцезнаходження</label>
+                        <input type="text" id="location" name="location" placeholder="Місто, район">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="description">Опис</label>
+                    <textarea id="description" name="description" required
+                        placeholder="Детальний опис оголошення..."></textarea>
+                </div>
+
+                <!-- Added image upload -->
+                <div class="form-group">
+                    <label>Зображення (необов'язково)</label>
+                    <div class="image-upload">
+                        <input type="file" id="imageUpload" accept="image/*" multiple>
+                        <p>📷 Перетягніть зображення або клікніть для вибору</p>
+                        <small>Максимум 3 зображення</small>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn">
+                    <span class="loading" id="submitLoading" style="display: none;"></span>
+                    Опублікувати оголошення
+                </button>
+            </form>
+        </div>
+
+        <!-- Enhanced search and filter section -->
+        <div class="search-filter">
+            <div class="filter-row">
+                <div class="form-group">
+                    <label for="searchInput">🔍 Пошук</label>
+                    <input type="text" id="searchInput" placeholder="Пошук по заголовку, опису або місцю...">
+                </div>
+                <div class="form-group">
+                    <label for="categoryFilter">📂 Категорія</label>
+                    <select id="categoryFilter">
+                        <option value="">Всі категорії</option>
+                        <option value="Продаж">🛒 Продаж</option>
+                        <option value="Купівля">💰 Купівля</option>
+                        <option value="Послуги">🔧 Послуги</option>
+                        <option value="Робота">💼 Робота</option>
+                        <option value="Нерухомість">🏠 Нерухомість</option>
+                        <option value="Транспорт">🚗 Транспорт</option>
+                        <option value="Навчання">📚 Навчання</option>
+                        <option value="Хобі">🎨 Хобі</option>
+                        <option value="Інше">📝 Інше</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="priceFilter">💰 Ціна до</label>
+                    <input type="number" id="priceFilter" placeholder="Максимальна ціна">
+                </div>
+                <div class="form-group">
+                    <label for="locationFilter">📍 Місце</label>
+                    <input type="text" id="locationFilter" placeholder="Фільтр по місцю">
+                </div>
+            </div>
+
+            <div class="sort-controls">
+                <span>Сортувати:</span>
+                <button class="sort-btn active" data-sort="date">📅 По даті</button>
+                <button class="sort-btn" data-sort="title">🔤 По алфавіту</button>
+                <button class="sort-btn" data-sort="rating">⭐ По рейтингу</button>
+                <button class="sort-btn" data-sort="price">💰 По ціні</button>
+                <button class="sort-btn" data-sort="views">👀 По переглядах</button>
+            </div>
+        </div>
+
+        <div id="announcementsContainer" class="announcements">
+            <!-- Оголошення будуть додаватися тут динамічно -->
+        </div>
+
+        <div id="noAnnouncements" class="no-announcements" style="display: none;">
+            <p>📝 Поки що немає оголошень. Будьте першим, хто додасть!</p>
+        </div>
+
+        <!-- Added floating action button -->
+        <button class="fab" onclick="scrollToTop()" title="Вгору">
+            ⬆️
+        </button>
+
+        <!-- Added modal for detailed view -->
+        <div id="detailModal" class="modal">
+            <div class="modal-content">
+                <span class="modal-close" onclick="closeModal()">&times;</span>
+                <div id="modalContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
